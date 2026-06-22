@@ -1,6 +1,8 @@
-﻿namespace FinalBattler.Character.Upgrades
+﻿using FinalBattler.Interfaces;
+
+namespace FinalBattler.Character.Upgrades
 {
-    public class Spell
+    public class Spell : IBattleAction
     {
         public string SpellName { get; set; }
         public int ManaCost { get; set; }
@@ -18,8 +20,13 @@
             return BaseDamage + (heroPower / 2);
         }
 
-        public void CastSpell(Hero hero)
+        public void Use(Hero hero, Monster monster)
         {
+            if (hero.Mana >= ManaCost)
+            {
+                hero.Mana -= ManaCost;
+                monster.TotalHealth -= CalculateSpellDamage(hero.Power);
+            }
         }
     }
 }

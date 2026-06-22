@@ -5,15 +5,33 @@ namespace FinalBattler.Character
 {
     public class Hero : Creations, IHero
     {
-        public int Health { get; set; }
-        public int Power { get; set; }
-        public int Luck { get; set; }
-        public int Mana { get; set; }
+        private int _health;
+        public int Health
+        {
+            get => _health;
+            set => _health = value < 0 ? 0 : value;
+        }
+        private int _power;
+        public int Power
+        {
+            get => _power;
+            set => _power = value < 0 ? 0 : value;
+        }
+        private int _luck;
+        public int Luck
+        {
+            get => _luck;
+            set => _luck = value < 0 ? 0 : value;
+        }
+        private int _mana;
+        public int Mana
+        {
+            get => _mana;
+            set => _mana = value < 0 ? 0 : value;
+        }
         public int ExperienceRemaining { get; set; }
         public CombatClass CombatClass { get; set; }
-        public List<Item> Items { get; set; }
-        public List<Skill> Skills { get; set; }
-        public List<Spell> Spells { get; set; }
+        public List<IBattleAction> BattleActions { get; set; }
         public List<Equipment> Equipment { get; set; }
 
         public Hero()
@@ -27,9 +45,7 @@ namespace FinalBattler.Character
             TotalHealth = 1;
             TotalPower = 1;
             TotalLuck = 1;
-            Items = new List<Item>();
-            Skills = new List<Skill>();
-            Spells = new List<Spell>();
+            BattleActions = new List<IBattleAction>();
             Equipment = new List<Equipment>();
         }
 
@@ -39,7 +55,7 @@ namespace FinalBattler.Character
             {
                 Console.WriteLine($"--- {Name} (Total Stats) ---");
                 Console.WriteLine($"Level: {Level}");
-                Console.WriteLine($"Health: {TotalPower}");
+                Console.WriteLine($"Health: {TotalHealth}");
                 Console.WriteLine($"Power: {TotalPower}");
                 Console.WriteLine($"Luck: {TotalLuck}");
                 Console.WriteLine($"Mana: {Mana}");
@@ -67,13 +83,13 @@ namespace FinalBattler.Character
                     Power += random.Next(1, 4);
                     Luck += random.Next(1, 4);
                     break;
-                
+
                 case CombatClass.Wizard:
                     Health += random.Next(1, 16);
                     Power += random.Next(3, 6);
                     Luck += random.Next(1, 4);
                     break;
-                
+
                 case CombatClass.Rogue:
                     Health += random.Next(1, 16);
                     Power += random.Next(1, 4);
@@ -84,7 +100,33 @@ namespace FinalBattler.Character
 
         public void CalculateTotals()
         {
+            TotalHealth = Health;
+            TotalPower = Power;
+            TotalLuck = Luck;
             
+            foreach (var equipment in Equipment)
+            {
+                switch (equipment.StatBoostType)
+                {
+                    case StatBoostType.Health:
+                        TotalHealth += equipment.BoostValue;
+                        break;
+                    case StatBoostType.Power:
+                        TotalPower += equipment.BoostValue;
+                        break;
+                    case StatBoostType.Luck:
+                        TotalLuck += equipment.BoostValue;
+                        break;
+                }
+            }
         }
+    }
+
+    public enum CombatClass
+    {
+        None,
+        Warrior,
+        Wizard,
+        Rogue
     }
 }

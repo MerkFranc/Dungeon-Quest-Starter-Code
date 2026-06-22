@@ -1,6 +1,7 @@
-﻿namespace FinalBattler.Character.Upgrades
+﻿using FinalBattler.Interfaces;
+namespace FinalBattler.Character.Upgrades
 {
-    public class Skill
+    public class Skill : IBattleAction
     {
         public string SkillName { get; set; }
         public int BaseDamage { get; set; }
@@ -15,8 +16,10 @@
             CurrentCooldown = 0; // Ready to use at the start
         }
 
-        public void UseSkill(Hero hero)
+        public void Use(Hero hero, Monster monster)
         {
+            monster.TotalHealth -= BaseDamage;
+            CurrentCooldown = MaxCooldown; // Set the cooldown after use
         }
 
         public void CooldownTick()

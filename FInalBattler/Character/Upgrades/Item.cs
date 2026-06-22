@@ -1,6 +1,8 @@
-﻿namespace FinalBattler.Character.Upgrades
+﻿using FinalBattler.Interfaces;
+
+namespace FinalBattler.Character.Upgrades
 {
-    public class Item
+    public class Item: IBattleAction
     {
         public string ItemName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -14,6 +16,11 @@
         {
             ItemName = name;
             Description = description;
+        }
+
+        public void Use(Hero hero, Monster monster)
+        {
+            hero.TotalHealth += ItemPower;
         }
     }
 }

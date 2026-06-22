@@ -4,16 +4,11 @@
     {
         public string Name { get; set; } = string.Empty;
         public int Level { get; set; }
-        public int TotalHealth { get; set; }
-        public int TotalPower { get; set; }
-        public int TotalLuck { get; set; }
-    }
-
-    public enum CombatClass
-    {
-        None,
-        Warrior,
-        Wizard,
-        Rogue
+        private int _totalHealth;
+        public int TotalHealth { get => _totalHealth; set => _totalHealth = value < 0 ? 0 : value; }
+        private int _totalPower;
+        public int TotalPower { get => _totalPower; set => _totalPower = value < 0 ? 0 : value; }
+        private int _totalLuck;
+        public int TotalLuck { get => _totalLuck; set => _totalLuck = value < 0 ? 0 : value; }
     }
 }
